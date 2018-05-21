@@ -81,9 +81,12 @@
         const stopper = 600;
 
         this.interval = setInterval(() => {
-          this.state.top !== stopper
-          ? this.setState({top : this.state.top + 10})
-          : this.setState({top : 10})
+          if (this.state.top !== stopper) {
+            this.setState({top : this.state.top + 10})
+          } else {
+            this.props.setNewSelection();
+            this.setState({top:10});
+          }
         }, 100)
       }
 
@@ -92,12 +95,13 @@
       }
 
       render() {
+        const {Z,Q,S,D} = this.props.active
         return (
           <div style={{top:`${this.state.top}px`}} className={'LettersSelection'}>
-            <SelectedLetter letter='Z' left='0' active={true}/>
-            <SelectedLetter letter='Q' left='80' active={false}/>
-            <SelectedLetter letter='S' left='160' active={true}/>
-            <SelectedLetter letter='D' left='240' active={true}/>
+            <SelectedLetter letter='Z' left='0' active={Z}/>
+            <SelectedLetter letter='Q' left='80' active={Q}/>
+            <SelectedLetter letter='S' left='160' active={S}/>
+            <SelectedLetter letter='D' left='240' active={D}/>
           </div>
         )
       }
@@ -111,15 +115,43 @@
       )
     }
 
-    function App() {
+    class App extends React.Component {
+      constructor(props) {
+        super(props)
 
+        this.state = {
+          active : {
+            'Z':true,
+            'Q':true,
+            'S':false,
+            'D':true
+          }
+        }
+
+      this.setNewSelection = this.setNewSelection.bind(this);
+
+      }
+
+      setNewSelection() {
+        this.setState({
+          active: {
+            'Z':false,
+            'Q':true,
+            'S':true,
+            'D':true
+          }
+        })
+      }
+
+      render() {
         return (
           <div>
-            <LettersSelection />
+            <LettersSelection active={this.state.active} setNewSelection={this.setNewSelection}/>
             <Grid />
             <Letters />
           </div>
         )
+      }
     }
 
       ReactDOM.render(
