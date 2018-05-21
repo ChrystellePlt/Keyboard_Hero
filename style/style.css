@@ -29,9 +29,14 @@
   align-items: center;
 }
 
+.LettersSelection {
+  position: absolute;
+  height: 80px;
+}
+
 .SelectedLetter {
-  height: 30px;
   width: 80px;
+  height: 30px;
   text-align: center;
   position: absolute;
 }

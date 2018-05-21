@@ -68,23 +68,22 @@
       )
     }
 
-    class SelectedLetter extends React.Component {
+    class LettersSelection extends React.Component {
       constructor(props) {
         super(props)
 
         this.state = {
-          letter: 'Z',
-          positionY: 10
+          top: 10
         }
       }
 
       componentDidMount() {
-        const stopper = 300;
+        const stopper = 600;
 
         this.interval = setInterval(() => {
-          this.state.positionY !== stopper
-          ? this.setState({positionY : this.state.positionY + 10})
-          : this.setState({positionY : 10})
+          this.state.top !== stopper
+          ? this.setState({top : this.state.top + 10})
+          : this.setState({top : 10})
         }, 100)
       }
 
@@ -94,45 +93,33 @@
 
       render() {
         return (
-          <div style={{top:`${this.state.positionY}px`}} className={'SelectedLetter'}>
-            {this.state.letter}
+          <div style={{top:`${this.state.top}px`}} className={'LettersSelection'}>
+            <SelectedLetter letter='Z' left='0' active={true}/>
+            <SelectedLetter letter='Q' left='80' active={false}/>
+            <SelectedLetter letter='S' left='160' active={true}/>
+            <SelectedLetter letter='D' left='240' active={true}/>
           </div>
         )
       }
     }
 
-    class App extends React.Component {
-      constructor(props) {
-        super(props)
+    function SelectedLetter(props) {
+      return (
+        <div className={'SelectedLetter'} style={{left: `${props.left}px`, display : props.active ? 'block' : 'none'}}>
+          {props.letter}
+        </div>
+      )
+    }
 
-        this.state = {
-          letter : 'Z',
-          positionX : 12,
-          positionY : 10,
-          keyCode : 122,
-          index : 0,
-        }
-      }
+    function App() {
 
-      dropLetter() {
-        this.style.top = this.positionY + 10;
-      }
-
-      /*getRandomNumber = max => {
-        return
-          Math.floor(Math.random() * Math.floor(max));
-      }*/
-
-
-      render() {
         return (
           <div>
-            <SelectedLetter />
+            <LettersSelection />
             <Grid />
             <Letters />
           </div>
         )
-      }
     }
 
       ReactDOM.render(
