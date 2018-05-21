@@ -6,162 +6,140 @@
     <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <script src='https://unpkg.com/babel-standalone@6/babel.min.js'></script>
-    <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/reset.css">
+    <link rel="stylesheet" href="style/style.css">
   </head>
   <body>
     <div id="app"></div>
 
-  </body>
-</html>
+    <script type='text/babel'>
 
-<script type='text/babel'>
-
-class FallingLetters extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      fallingLetters : [ 'z', 'q', 's', 'd']
-    }
-  }
-
-  render() {
-    return (
-      <div>
-      <ul>
-      {this.props.fallingLetters.map((letter) => (
-        <li>{letter}</li>
-      ))}
-      </ul>
-      </div>
-    )
-  }
-}
-
-class DisplayLetters extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {z: false};
-  }
-  componentDidMount() {
-    window.addEventListener('keypress', (event) => {
-        const currentKey = event.keyCode;
-        for (var i = 0; i < this.props.letters.length; i++) {
-          if (currentKey === this.props.letters[i].keyCode) {
-            var state = {};
-            state[this.props.letters[i].letter] = true;
-            this.setState(state)
-          } else {
-            var state = {};
-            state[this.props.letters[i].letter] = false;
-            this.setState(state)
-          }
-        }
-      }
-    );
-  }
-  render() {
-    var lis = this.props.letters.map((item) => {
-      var active = '';
-      if (this.state[item.letter] === true)
-        active = 'blue';
+    function Letters(props) {
+      const letters = ['Z', 'Q', 'S', 'D']
+      const max = letters.length;
 
       return (
-        <li key={item.letter}>
-          <span className={active}>{item.letter}</span>
-        </li>
-      );
-    });
-
-    return (
-        <ul className="bottom_letters">
-          {lis}
+        <ul className={'bottom_letters'}>
+          {letters.map((letter) =>
+            <li key={letter}>
+              {letter}
+            </li>
+          )}
         </ul>
-    )
-  }
-}
-
-function DisplayGrid () {
-  return (
-    <div className="grid">
-      <ul className="col">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-      </ul>
-      <ul className="col">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-      </ul>
-      <ul className="col">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-      </ul>
-      <ul className="col">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-      </ul>
-    </div>
-  )
-}
-
-  class App extends React.Component {
-    constructor(props) {
-      super(props)
-      this.state = {
-        letters: [
-          {
-            letter : 'Z',
-            keyCode : 122,
-          },
-          {
-            letter : 'Q',
-            keyCode : 113,
-          },
-          {
-            letter : 'S',
-            keyCode : 115,
-          },
-          {
-            letter : 'D',
-            keyCode : 100,
-          }
-        ]
-      }
+      )
     }
 
-    render() {
+    function Grid (props) {
       return (
-        <div>
-          <FallingLetters />
-          <DisplayLetters
-            letters={this.state.letters}
-          />
-          <DisplayGrid />
+        <div className={'grid'}>
+          <ul className={'col'}>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+          <ul className={'col'}>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+          <ul className={'col'}>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+          <ul className={'col'}>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
         </div>
       )
     }
 
-  }
+    class SelectedLetter extends React.Component {
+      constructor(props) {
+        super(props)
 
-  ReactDOM.render(
-  <App />,
-  document.getElementById('app')
-)
+        this.state = {
+          letter: 'Z',
+          positionY: 10
+        }
+      }
 
-</script>
+      componentDidMount() {
+        const stopper = 300;
+
+        this.interval = setInterval(() => {
+          this.state.positionY !== stopper
+          ? this.setState({positionY : this.state.positionY + 10})
+          : this.setState({positionY : 10})
+        }, 100)
+      }
+
+      componentWillUnmount() {
+        clearInterval(this.interval);
+      }
+
+      render() {
+        return (
+          <div style={{top:`${this.state.positionY}px`}} className={'SelectedLetter'}>
+            {this.state.letter}
+          </div>
+        )
+      }
+    }
+
+    class App extends React.Component {
+      constructor(props) {
+        super(props)
+
+        this.state = {
+          letter : 'Z',
+          positionX : 12,
+          positionY : 10,
+          keyCode : 122,
+          index : 0,
+        }
+      }
+
+      dropLetter() {
+        this.style.top = this.positionY + 10;
+      }
+
+      /*getRandomNumber = max => {
+        return
+          Math.floor(Math.random() * Math.floor(max));
+      }*/
+
+
+      render() {
+        return (
+          <div>
+            <SelectedLetter />
+            <Grid />
+            <Letters />
+          </div>
+        )
+      }
+    }
+
+      ReactDOM.render(
+      <App />,
+      document.getElementById('app')
+    )
+
+    </script>
+  </body>
+</html>

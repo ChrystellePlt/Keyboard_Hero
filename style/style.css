@@ -5,12 +5,12 @@
 }
 
 .col {
-  width: 100px;
+  width: 80px;
   border: .5px solid turquoise;
 }
 
 .col > li {
-  height: 50px;
+  height: 80px;
   border: .5px solid pink;
 }
 
@@ -21,10 +21,17 @@
 }
 
 .bottom_letters > li {
-  width: 100px;
+  width: 80px;
   height: 50px;
   border: .5px solid turquoise;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.SelectedLetter {
+  height: 30px;
+  width: 80px;
+  text-align: center;
+  position: absolute;
 }
