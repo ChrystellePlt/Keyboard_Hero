@@ -87,7 +87,7 @@
             this.props.setNewSelection();
             this.setState({top:10});
           }
-        }, 100)
+        }, 50)
       }
 
       componentWillUnmount() {
@@ -109,7 +109,7 @@
 
     function SelectedLetter(props) {
       return (
-        <div className={'SelectedLetter'} style={{left: `${props.left}px`, display : props.active ? 'block' : 'none'}}>
+        <div className={'SelectedLetter'} style={{left: `${props.left}px`, display : (props.active === 1) ? 'block' : 'none'}}>
           {props.letter}
         </div>
       )
@@ -121,10 +121,10 @@
 
         this.state = {
           active : {
-            'Z':true,
-            'Q':true,
-            'S':false,
-            'D':true
+            'Z':1,
+            'Q':1,
+            'S':0,
+            'D':1
           }
         }
 
@@ -132,43 +132,28 @@
 
       }
 
-      /*shuffle(array) {
-        let currentIndex = array.length;
-        let temporaryValue;
-        let index;
-
-        while (currentIndex > 0) {
-            index = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[index];
-            array[index] = temporaryValue;
-        }
-        return array;
-      }*/
-
-
-
       setNewSelection() {
-        let booleansArray = [true, true, false, true];
-        let currentIndex = booleansArray.length;
-        let temporaryValue;
-        let index;
+        const letters = ['Z','Q','S','D']
+        let newArray = []
 
-        while (currentIndex > 0) {
-            index = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-            temporaryValue = booleansArray[currentIndex];
-            booleansArray[currentIndex] = booleansArray[index];
-            booleansArray[index] = temporaryValue;
+        const getNewArray = () => {
+          while (newArray.length !== letters.length) {
+            let randomNumber = Math.floor(Math.random() * Math.floor(2));
+            newArray.push(randomNumber)
+          }
+          if (newArray.includes(1) === false) {
+            getNewArray()
+          }
         }
+
+        getNewArray();
 
         this.setState({
           active: {
-            'Z': booleansArray[0],
-            'Q': booleansArray[1],
-            'S': booleansArray[2],
-            'D': booleansArray[3]
+            'Z': newArray[0],
+            'Q': newArray[1],
+            'S': newArray[2],
+            'D': newArray[3]
           }
         })
       }
