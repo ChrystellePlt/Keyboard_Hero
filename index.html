@@ -132,13 +132,43 @@
 
       }
 
+      /*shuffle(array) {
+        let currentIndex = array.length;
+        let temporaryValue;
+        let index;
+
+        while (currentIndex > 0) {
+            index = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[index];
+            array[index] = temporaryValue;
+        }
+        return array;
+      }*/
+
+
+
       setNewSelection() {
+        let booleansArray = [true, true, false, true];
+        let currentIndex = booleansArray.length;
+        let temporaryValue;
+        let index;
+
+        while (currentIndex > 0) {
+            index = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            temporaryValue = booleansArray[currentIndex];
+            booleansArray[currentIndex] = booleansArray[index];
+            booleansArray[index] = temporaryValue;
+        }
+
         this.setState({
           active: {
-            'Z':false,
-            'Q':true,
-            'S':true,
-            'D':true
+            'Z': booleansArray[0],
+            'Q': booleansArray[1],
+            'S': booleansArray[2],
+            'D': booleansArray[3]
           }
         })
       }
