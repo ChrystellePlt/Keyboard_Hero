@@ -14,19 +14,37 @@
 
     <script type='text/babel'>
 
-    function Letters(props) {
-      const letters = ['Z', 'Q', 'S', 'D']
-      const max = letters.length;
+    class BottomLetters extends React.Component {
+      constructor(props) {
+        super(props);
 
-      return (
-        <ul className={'bottom_letters'}>
-          {letters.map((letter) =>
-            <li key={letter}>
-              {letter}
-            </li>
-          )}
-        </ul>
-      )
+        this.state = {
+          letters:[
+            { class: 'black', letter: 'Z' },
+            { class: 'black', letter: 'Q' },
+            { class: 'black', letter: 'S' },
+            { class: 'black', letter: 'D' }
+          ]
+        }
+      }
+
+      componentDidMount() {
+        window.addEventListener('keypress', (event) => {
+          console.log(event.keyCode);
+        });
+      }
+
+      render() {
+        return (
+          <ul className={'bottom_letters'}>
+            {this.state.letters.map((letter) =>
+              <li key={letter.letter} className={letter.class}>
+                {letter.letter}
+              </li>
+            )}
+          </ul>
+        )
+      }
     }
 
     function Grid (props) {
@@ -68,7 +86,7 @@
       )
     }
 
-    class LettersSelection extends React.Component {
+    class FirstLettersSelection extends React.Component {
       constructor(props) {
         super(props)
 
@@ -84,8 +102,47 @@
           if (this.state.top !== stopper) {
             this.setState({top : this.state.top + 10})
           } else {
-            this.props.setNewSelection();
+            this.props.setFirstSelection();
             this.setState({top:10});
+          }
+        }, 50)
+      }
+
+      componentWillUnmount() {
+        clearInterval(this.interval);
+      }
+
+      render() {
+        const {Z,Q,S,D} = this.props.active
+        return (
+          <div style={{top:`${this.state.top}px`}} className={'LettersSelection'}>
+            <SelectedLetter letter='Z' left='0' active={Z}/>
+            <SelectedLetter letter='Q' left='80' active={Q}/>
+            <SelectedLetter letter='S' left='160' active={S}/>
+            <SelectedLetter letter='D' left='240' active={D}/>
+          </div>
+        )
+      }
+    }
+
+    class SecondLettersSelection extends React.Component {
+      constructor(props) {
+        super(props)
+
+        this.state = {
+          top: -250
+        }
+      }
+
+      componentDidMount() {
+        const stopper = 600;
+
+        this.interval = setInterval(() => {
+          if (this.state.top !== stopper) {
+            this.setState({top : this.state.top + 10})
+          } else {
+            this.props.setSecondSelection();
+            this.setState({top:-250});
           }
         }, 50)
       }
@@ -115,28 +172,36 @@
       )
     }
 
+
     class App extends React.Component {
       constructor(props) {
         super(props)
 
         this.state = {
-          active : {
+          firstSelection : {
             'Z':1,
             'Q':1,
+            'S':0,
+            'D':1
+          },
+          secondSelection : {
+            'Z':1,
+            'Q':0,
             'S':0,
             'D':1
           }
         }
 
-      this.setNewSelection = this.setNewSelection.bind(this);
-
+      this.setFirstSelection = this.setFirstSelection.bind(this);
+      this.setSecondSelection = this.setSecondSelection.bind(this);
       }
 
-      setNewSelection() {
+      setFirstSelection() {
         const letters = ['Z','Q','S','D']
         let newArray = []
 
         const getNewArray = () => {
+          newArray = [];
           while (newArray.length !== letters.length) {
             let randomNumber = Math.floor(Math.random() * Math.floor(2));
             newArray.push(randomNumber)
@@ -149,7 +214,34 @@
         getNewArray();
 
         this.setState({
-          active: {
+          firstSelection: {
+            'Z': newArray[0],
+            'Q': newArray[1],
+            'S': newArray[2],
+            'D': newArray[3]
+          }
+        })
+      }
+
+      setSecondSelection() {
+        const letters = ['Z','Q','S','D']
+        let newArray = []
+
+        const getNewArray = () => {
+          newArray = [];
+          while (newArray.length !== letters.length) {
+            let randomNumber = Math.floor(Math.random() * Math.floor(2));
+            newArray.push(randomNumber)
+          }
+          if (newArray.includes(1) === false) {
+            getNewArray()
+          }
+        }
+
+        getNewArray();
+
+        this.setState({
+          setSecondSelection: {
             'Z': newArray[0],
             'Q': newArray[1],
             'S': newArray[2],
@@ -161,9 +253,11 @@
       render() {
         return (
           <div>
-            <LettersSelection active={this.state.active} setNewSelection={this.setNewSelection}/>
+            <FirstLettersSelection active={this.state.firstSelection} setFirstSelection={this.setFirstSelection}/>
+            <SecondLettersSelection active={this.state.secondSelection} setSecondSelection={this.setSecondSelection}/>
+
             <Grid />
-            <Letters />
+            <BottomLetters />
           </div>
         )
       }
