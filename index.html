@@ -25,7 +25,18 @@
           classname : 'inactive'
         }
       }
-      
+
+      componentDidMount() {
+        window.addEventListener('keypress', (event) => {
+          console.log(event.keyCode)
+          if (event.keyCode === this.state.code) {
+            this.setState({classname:'red'})
+          } 
+        })
+        window.addEventListener('keyup', (event) => {
+          this.setState({classname:'inactive'})
+        })
+      }
 
       render () {
         return <li key={this.state.letter} code={this.state.code} className={this.state.classname}>{this.state.letter}</li>
@@ -42,7 +53,17 @@
           classname : 'inactive'
         }
       }
-      
+
+      componentDidMount() {
+        window.addEventListener('keypress', (event) => {
+          if (event.keyCode === this.state.code) {
+            this.setState({classname:'red'})
+          } 
+        })
+        window.addEventListener('keyup', (event) => {
+          this.setState({classname:'inactive'})
+        })
+      }
 
       render () {
         return <li key={this.state.letter} code={this.state.code} className={this.state.classname}>{this.state.letter}</li>
@@ -60,6 +81,17 @@
         }
       }
       
+      componentDidMount() {
+        window.addEventListener('keypress', (event) => {
+          console.log(event.keyCode)
+          if (event.keyCode === this.state.code) {
+            this.setState({classname:'red'})
+          } 
+        })
+        window.addEventListener('keyup', (event) => {
+          this.setState({classname:'inactive'})
+        })
+      }
 
       render () {
         return <li key={this.state.letter} code={this.state.code} className={this.state.classname}>{this.state.letter}</li>
@@ -77,7 +109,18 @@
         }
       }
       
-
+      componentDidMount() {
+        window.addEventListener('keypress', (event) => {
+          console.log(event.keyCode)
+          if (event.keyCode === this.state.code) {
+            this.setState({classname:'red'})
+          } 
+        })
+        window.addEventListener('keyup', (event) => {
+          this.setState({classname:'inactive'})
+        })
+      }
+      
       render () {
         return <li key={this.state.letter} code={this.state.code} className={this.state.classname}>{this.state.letter}</li>
       }
