@@ -14,37 +14,84 @@
 
     <script type='text/babel'>
 
-    class BottomLetters extends React.Component {
+    
+    class LetterZ extends React.Component {
       constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
-          letters:[
-            { class: 'black', letter: 'Z' },
-            { class: 'black', letter: 'Q' },
-            { class: 'black', letter: 'S' },
-            { class: 'black', letter: 'D' }
-          ]
+          letter : 'Z',
+          code : 122,
+          classname : 'inactive'
         }
       }
+      
 
-      componentDidMount() {
-        window.addEventListener('keypress', (event) => {
-          console.log(event.keyCode);
-        });
+      render () {
+        return <li key={this.state.letter} code={this.state.code} className={this.state.classname}>{this.state.letter}</li>
       }
+    }
 
-      render() {
-        return (
-          <ul className={'bottom_letters'}>
-            {this.state.letters.map((letter) =>
-              <li key={letter.letter} className={letter.class}>
-                {letter.letter}
-              </li>
-            )}
-          </ul>
-        )
+    class LetterQ extends React.Component {
+      constructor(props) {
+        super(props)
+
+        this.state = {
+          letter : 'Q',
+          code : 113,
+          classname : 'inactive'
+        }
       }
+      
+
+      render () {
+        return <li key={this.state.letter} code={this.state.code} className={this.state.classname}>{this.state.letter}</li>
+      }
+    }
+
+    class LetterS extends React.Component {
+      constructor(props) {
+        super(props)
+
+        this.state = {
+          letter : 'S',
+          code : 115,
+          classname : 'inactive'
+        }
+      }
+      
+
+      render () {
+        return <li key={this.state.letter} code={this.state.code} className={this.state.classname}>{this.state.letter}</li>
+      }
+    }
+
+    class LetterD extends React.Component {
+      constructor(props) {
+        super(props)
+
+        this.state = {
+          letter : 'D',
+          code : 100,
+          classname : 'inactive'
+        }
+      }
+      
+
+      render () {
+        return <li key={this.state.letter} code={this.state.code} className={this.state.classname}>{this.state.letter}</li>
+      }
+    }
+
+    function BottomLetters (){
+      return (
+        <ul className={'bottom_letters'}>
+          <LetterZ />
+          <LetterQ />
+          <LetterS />
+          <LetterD />
+        </ul>
+      )
     }
 
     function Grid (props) {
